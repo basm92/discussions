@@ -1,0 +1,129 @@
+---
+title: "Discussion of Beyond Additionality: The Impact of EU Cohesion Policy on Investments by the Member States"
+author: "Bas Machielsen (discussant)"
+date: "`r Sys.Date()`"
+output: beamer_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+# Short Summary
+
+## Short Summary
+
+- Paper studies crowding in / crowding out effect of EU Cohesion Policy
+- European Regional Development Fund (ERDF) and the European Social Fund (ESF) make up about 8% of all public investments.
+  - Much more in some countries (e.g. Poland, Hungary) than others
+- Additionality principle: Cohesion Policy funding can only append, not replace national funding
+
+> If crowding-out takes place, governments might shift the fiscal resources that they perceive to be freed up towards uses at later periods, other purposes in the same region, or in other regions altogether.
+
+- Results show: crowding out of public investments, but compensated by crowding in of private investments
+
+
+## Short Summary [2]
+
+- Two complementary analyses:
+
+1. (Fuzzy) RDD around the eligibility threshold
+
+$$
+\text{funds}_{rt} = \chi I_{rt} + f(\text{GDP}_{rt}) + \eta_c + \mu_t + \epsilon_{rt},
+$$
+$$
+\Delta Y_{rt} = \beta \, \hat{\text{funds}}_{rt} + f(\text{GDP}_{rt}) + \eta_c + \mu_t + \epsilon_{rt},
+$$
+with $I_{rt}$ if region $r$ in year $t$ has GDP > 75% of the threshold.
+
+2. DiD exploiting Eligibility Loss following EU expansion vs. regions that did not lose their eligibility
+
+$$
+\Delta Y_{rt} = \beta \text{EligibilityLoss}_r \cdot \text{Post}_t + \chi_r + \mu_t + \epsilon
+$$
+
+
+## Outline of Discussion
+
+- RDD Analysis
+  - Bandwidth
+  - Manipulation
+  - RDD vs. DiD
+  
+- Interpretation of Results
+  - Crowding-in
+  - Crowding-out
+  - Mechanisms
+
+- Suggestions for Further Research
+
+## Bandwidth
+
+> We choose a moderate threshold of 40 percentage point following Lang et al. (2022), meaning our baseline estimation includes regions between 35% and 115% of EU average regional GDP per capita share.
+
+- Why deviate from the Calonico et al. (2020) MSE-optimal bandwidth? (`rdrobust` in R/Stata)
+- 40% seems substantial: are a region with 30% of the regional GDP and 115% of the regional GDP really plausible counterfactuals for each other? What is the between- and within-country SD of this variable?
+
+- More evidence that these regions are comparable (control variables, pre-treatment chars.), e.g. Eurostat
+  - No discontinuity in cond. expectation at the margin
+  
+## Manipulation
+
+- No manipulation is a testable assumption
+- How stationary is the regional GDP over time? 
+  - If very stationary, argument about prediction of the mean fails
+- Standard practice is the `rddensity` package
+- See [Fitzgerald, 2024](https://research.vu.nl/ws/portalfiles/portal/336254741/RDD_Equivalence.pdf) about manipulation tests
+  - Point here is that $H_0 \rightarrow$ No Manipulation means that imprecision and power leads to a desirable outcome
+  - This paper inverts the $H_0$ and $H_A$ so that you actually have to reject the $H_0$ of manipulation
+
+## RDD vs DiD
+
+- DiD and RD Consistency: the Loosing Eligibility status coefficient in for $t_0 + 1$ gives you a coefficient that (I think) should be roughly equal to the reduced-form coefficient in $\Delta Y_{rt} = \beta I_{rt}$ in a (sharp) RDD analysis
+  - This could be the basis of a placebo test of whether the approaches give the same answer if used to answer the same question
+  
+- What is wrong with estimating dynamics, i.e. $\Delta Y_{rt+1} = \beta \hat{\text{funds}}_{rt}$, with the fuzzy RDD strategy to do a dynamic analysis instead of DiD?  
+
+
+## Interpretation of Results: Crowding-out
+
+- Main finding I: Crowding-out effect of EU funding on public investment
+  
+- Nuances between effect sizes: 
+  - Table 1 (Slides): GFCF: -0.047
+  - Table 1 (Draft): Public Sector: -0.16
+  - Table 1 (Draft): Public Sector with 100% pass-through: -0.42
+  
+- The difference between coeficients 2 and 3 is well-explained, but:
+- Public Sector with pass-through effect ~10 times as big as GFCF definition of public investments
+- What are the implications if public investments don't go to "Gross Fixed Capital Formation"? 
+  - What do they then encompass?
+  
+## Interpretation of Results: Crowding-in
+
+- Main finding II: Crowding-in effect of EU funding on private sector investment
+  - Main responsible sectors: services & financial sector (draft), real estate & construction (slides)
+  
+- IMO this would benefit from either anecdotal evidence about _what the EU funding is actually for_
+  - Or from more [systematic evidence](https://ec.europa.eu/regional_policy/in-your-country/programmes/2021-2027/lv/2021lv16ffpr001_en) 
+    - E.g. process text of descriptions from the European Commission and its Priorities
+    - Potentially look at country-level heterogeneity in project allocation and look for corresponding evidence
+    
+## Interpretation of Results: Mechanisms
+
+- Takeaway finding: public investments increase (take up the place of EU funding), but only temporarily
+- Private investments decrease gradually following loss of Cohesion eligibility
+- Could the public investments increase be related to transition funding? 
+  - E.g. projects being unviable in the long run, but as long as there is _some_ EU funding, public investment makes sense
+- For private investments, the investment pattern is "inverse U-shaped" and centered around the time of cohesion loss
+  - Investments lower than control regions _before_ loss of Eligibility, and also lower after loss of Eligibility
+  - Suggests the anticipation of eligibility loss? (First delay investments, then rush, then adjustment)
+  
+## Suggestions for Further Research
+
+- Last point (anticipation) of funding loss suggests a political economy component here
+  - Do (regional) governments strategically accelerate the absorption of cohesion funds before elections?
+  - Or to boost short-term economic activity at the expense of long-term growth? (cf. results on GDP growth)
+  
+- How do different political ideologies or party alignments (e.g., pro-EU vs. euroskeptic parties) adjust to the gain (loss) of EU funding?

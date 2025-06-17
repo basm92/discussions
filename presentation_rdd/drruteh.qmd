@@ -1,0 +1,271 @@
+---
+title: "Dynamic Regression Discontinuity Under Treatment Effect Heterogeneity"
+author: "Bas Machielsen (discussant)"
+format: 
+  beamer:
+    aspectratio: 169
+editor: visual
+---
+
+## Introduction
+
+- This paper by Hsu and Shen is about **dynamic** regression discontinuity
+- Meaning: multiple rounds in which subjects can receive a treatment
+
+- The starting point of the paper is based on an approach by Cellini, Ferreira and Rothstein (2010) (henceforth CFR)
+- In the CFR paper, we are interested in identifying the long-run effect of passing a local education bond on outcomes (e.g. education expenditure, test scores, and local house prices.)
+
+## Introduction
+
+- Standard situation: 
+
+> One wishes that the education bond voting would only take place once. Then, comparing long-run outcomes between school districts that barely pass and barely miss the vote share cutoff, would give average long-
+term direct effects of interests (for those school districts at the vote share cutoff). 
+
+- I.e. $Y_{i,t} = \alpha + \beta I(\text{$Z_{i, t_0} > 0$}) + \epsilon$
+- You observe some long run (at time $t$ output) as a consequence of a one-time treatment at time $t_0$. 
+
+
+## Introduction 
+
+- However, often this is not the case you're dealing with. In the CFR paper:
+
+> In reality, education bond measures can be put forward repeatedly. As is discussed in CFR, the difference in observed long-run outcomes at the RD cutoff only captures an average total effect that is also influenced by subsequent bond authorizations.
+
+- Meaning you might have something more complex like this:
+
+$$
+Y_{it} = \alpha + \sum_{k=t_0}^t \beta_k I(\text{$Z_{i, k} > 0$}) + \dots + \epsilon
+$$
+
+- In addition to possible short-run (instantaneous) treatments effects, the outcome might also be "contaminated" by long-term effects and path-dependent effects of the treatment (e.g. $\beta_2$ might be different for those having received treatment at $t=1$ vs. those who did not)
+- I'll be more specific about this later
+
+## What This Paper Does
+
+- This paper focuses on identification and estimation of long-run direct effects of successive treatments in an RD framework under a potential outcomes framework
+
+- I will mainly focus on the two-period case (as does the paper)
+- All the intuition easily carries over (imo) to the more general case
+
+- Outline of my discussion:
+  - Define the setting and the estimands for the 2 period case
+  - Express the CFR identification strategy in this new framework
+  - Express a different, less strict identification strategy by Hsu and Shen
+  - Do some of this briefly for the more general case.
+
+## Setting: Two-Period Case
+
+- Consider a repeated RD setting, where the RD event (e.g., election, testing, etc.) takes place at the beginning of each period, and the treatment is administrated immediately following the event for participants who pass a running variable threshold. An outcome is observed at the end of each period.
+
+$$
+D_{i1}=I(Z_{i1}>0), \mbox{ and } Y_{i1}=Y_{i1}(0)(1-D_{i1}) + Y_{i1}(1)D_{i1}
+$$
+
+- In period two, the treatment is a (potentially endogenous) outcome:
+
+$$
+D_{i2} = D_{i2}(0)(1-D_{i1}) + D_{i2}(1) D_{i1}
+$$
+
+$$
+\begin{aligned}
+Y_{i2} =  Y_{i2}(0,0)(1-D_{i1})(1-D_{i2}(0)) + Y_{i2}(0,1)(1-D_{i1})D_{i2}(0) + \\ \newline
+Y_{i2}(1,0) D_{i1}(1-D_{i2}(1)) + Y_{i2}(1,1) D_{i1} D_{i2}(1)
+\end{aligned}
+$$
+
+## Setting [2]
+
+The second-period observed participation decision and treatment decision satisfy:
+
+$$
+\begin{aligned}
+S_{i2} &= S_{i2}(0)(1 − D_{i1}) + S_{i2} (1) D_{i1}, \\
+D_{i2} &= S_{i2}(0) I(Z_{i2} (0) \geq 0) (1 − D_{i1}) + S_{i2} (1) I(Z_{i2} (1) \geq 0 ) D_{i1}
+\end{aligned}
+$$
+
+## Estimands
+
+- Even in this two-period setting, you can think of the following estimands defined at the individual level:
+
+  - Immediate effect of $D_{i1}$: $\theta_{i; 0, 1} = Y_{i1} (1) - Y_{i1} (0)$;
+  - Immediate effect of $D_{i2}$: $\theta_{i; 0, 2} = Y_{i2} (d_1, 1) - Y_{i2} (d_1, 0)$ for $d_1=\{0,1\}$
+  - One-period after direct effect of $D_{i1}$: $\theta_{i; 1, 1} = Y_{i2}(1,0) - Y_{i2}(0,0)$
+  - One-period after _total_ effect of $D_{i2}$: $\tilde{\theta}_{i; 1,1} = \tilde{Y_{i2}} (1) - \tilde{Y_{i2}} (0)$
+  - Where $\tilde{Y}_{i2}(d_1)= Y_{i2}(d_1, D_{i2}(d_1)) = Y_{i2}(d_1, 0)(1-D_{i2}(d_1)) + Y_{i2}(d_1, 1) D_{i2}(d_1)$
+  
+- Subscripts here should be read as: $\theta_{i; a, b}$ = treatment effects for the $b$'th period with $a$ lags. 
+- One-period after effects are defined by the absence of any treatments after the "focal round"
+
+## Estimands
+
+- Out of:
+
+  - Immediate effect of $D_{i1}$: $\theta_{i; 0, 1} = Y_{i1} (1) - Y_{i1} (0)$;
+  - Immediate effect of $D_{i2}$: $\theta_{i; 0, 2} = Y_{i2} (d_1, 1) - Y_{i2} (d_1, 0)$ for $d_1=\{0,1\}$
+  - One-period after direct effect of $D_{i1}$: $\theta_{i; 1, 1} = Y_{i2}(1,0) - Y_{i2}(0,0)$
+  - One-period after _total_ effect of $D_{i2}$: $\tilde{\theta}_{i; 1,1} = \tilde{Y_{i2}} (1) - \tilde{Y_{i2}} (0)$
+  
+- 1 and 4 are easily identified using standard regression discontinuity assumptions (Assumptions 2.1 in the paper, $Z_{i1}$ continuous in $\mathcal{N}_\epsilon$, conditional expectations of $Y_{i1}, \tilde{Y}_{i2} \mbox{ and } D_{i2}$ continuous  in $Z$, see eq. 2.1)
+- The CFR method consists of making assumptions to identify 3 as well. 
+
+## CFR Identification Strategy
+
+- Equation 2.2 relates the expected value of one-period after _total_ effect to the one-period after _direct_ effect:
+
+$$
+E[\tilde{\theta}_{i;1,1}|Z_{i1} = 0] = E[\theta_{i;1,1}|Z_{i1} = 0] + E[\theta^1_{i;0,2} D_{i2}(1) | Z_{i1}=0] - E[\theta^0_{i;0,2} D_{i2}(0) | Z_{i1}=0]
+$$
+
+- Remember, the total effect is identified and $\theta_{i;1,1}$ is what we want to estimate. 
+- "Proof sketch": Start with the definition of $\tilde{\theta}_{i;1,1}$, add and subtract $Y_{i2}(1,0) - Y_{i2}(0,0)$ to the RHS, and rewrite. 
+
+- The strategy of CFR is to "restrict individual treatment effects to vary only by the number of periods between potential outcomes and the focal round of treatment"
+  - In other words, treatment effects depend on the lag, not on the period. 
+  
+## CFR Identification Strategy [2]
+
+- Again Eq. 2.2 for convenience: 
+$$
+\begin{aligned}
+E[\tilde{\theta}_{i;1,1}|Z_{i1} = 0] &= E[\theta_{i;1,1}|Z_{i1} = 0] + \\ &E[\theta^1_{i;0,2} D_{i2}(1) | Z_{i1}=0] - E[\theta^0_{i;0,2} D_{i2}(0) | Z_{i1}=0]
+\end{aligned}
+$$
+
+- The coefficients $\theta_{i; 0, 1}, \theta^1_{i; 0,2}, \mbox{ and } \theta^0_{i; 0,2}$ are thus assumed to be the same, $\hat{=} \theta_0$ for all $i$
+
+- Eq. 2.2 then becomes:
+
+$$
+E[\tilde{\theta}_{i;1,1} |Z_{i1} = 0] = \theta_1 + \theta_0 E[D_{i2} (1) − D_{i2} (0)|Z_{i1} = 0]
+$$
+
+- The LHS here is the total effect (identified) and the right hand side contains:
+  - The unknown $\theta_1$
+  - The identified $\theta_0$, the "no lag" effect times the..
+  - "First stage" effect, also identified by Assumption 2.1 
+  
+## CFR Identification Strategy [3]
+
+- Hence the recursive identification strategy consists of first estimating the total effects and the first stages, and then calculating $\theta_1$ from those estimates. 
+
+- The paper then proceeds to say that you don't _need_ individual treatment effect homogeneity, but this requires the additional assumption that $E[\theta^{d_1}_{i;0,2} | D_{i2}(d_1), Z_{i1}=0] = E[\theta^{d_1}_{i;0,2} | Z_{i1}=0]$ (Assumption 2.5 in Lemma 2.1)
+  - "Proof sketch": this assumption allows us to take equation 2.2 and use the LIE (with indicators $D_{i2}(d_1)$ to take $E[\theta^{d_1}_{i;0,2} D_{i2}(d_1)|Z_{i1}=0]$ and rewrite it, using 2.5, as $E[D_{i2}(d_1) | Z_{i1}=0] \cdot E[\theta^{d_1}_{i; 0,2} | Z_{i1}=0]$ for $d_1 \in \{0,1\}$
+
+- Hence, the "recursive" result is retained under less stringent homogeneous ATE's and Assumption 2.5. However the authors still find 2.5 is strong. 
+
+## Hsu-Chen Identification Strategy
+
+- The authors seek to relax 2.4 and 2.5 (Treatment homogeneity and random 2nd round treatment selection)
+- Instead, they assume: for $z_1 \in \mathcal{N}_\epsilon$:
+
+$$
+E[Y_{i2} (d_1 , 0)|Z_{i2} (d_1) = z_ 2 , S_{i2} (d_1) = 1, Z_{i1} = z_1 ] = E[Y_{i2} (d_1 , 0)|S_{i2} (d_1) = 1, Z_{i1}=z_1]
+$$
+
+- In words (my take): fix your win/loss in the first round. Then, in expectation, your potential outcome in the second period, if you lose, is independent of your potential second-period running variable outcome. 
+
+
+## Hsu-Chen Identification Strategy [2]
+
+- Then, again start with eq. 2.2. We have already seen that $\tilde{\theta}_{i;1,1}$ is identified under Assumptions 2.2.2 and 2.2.3. 
+
+$$
+\begin{aligned}
+E[\tilde{\theta}_{i;1,1}|Z_{i1} = 0] &= E[\theta_{i;1,1}|Z_{i1} = 0] + \\ &E[\theta^1_{i;0,2} D_{i2}(1) | Z_{i1}=0] - E[\theta^0_{i;0,2} D_{i2}(0) | Z_{i1}=0]
+\end{aligned}
+$$
+
+- The two terms on the RHS are identified by an argument similar to this:
+  - Rewrite $E[\theta^{d_1}_{i;0,2} D_{i2}(d_1) | Z_{i1}=0]$ in terms of potential outcomes. 
+  - Then additionally condition on $D_{i2} (d_1)$ to derive Eqs. 2.8 and 2.9 (Example on next slide)
+  
+  
+## Hsu-Shen Identification Strategy [3]
+
+- We want to identify $E[Y_{i2} (1, 1)|D_{i2} (1) = 1, Z_{i1} = 0] = \lim_{z_1 \to 0^+} E[Y_{i2} |S_{i2} = 1, D_{i2} = 1, Z_{i1} = z_1 ]$.
+  - For $Z_{i1} \to 0^+$, $D_{i1}=1$, and $\{S_{i2}=1, D_{i2}=1\} \equiv \{S_{i2}(1)=1, Z_{i2}(1) \geq 0\}$. Hence $Y_{i2} = Y_{i2}(1,1)$ for this subgroup. 
+  - Hence $\lim_{z_1 \to 0^+} E[Y_{i2} \,|\, S_{i2}=1, D_{i2}=1, Z_{i1}=z_1] = \lim_{z_1 \to 0^+} E[Y_{i2}(1,1) \,|\, S_{i2}(1)=1, Z_{i2}(1) \geq 0, Z_{i1}=z_1]$.
+  - By 2.2: $\lim_{z_1 \to 0^+} E[Y_{i2}(1,1) \,|\, D_{i2}(1)=1, Z_{i1}=z_1] = E[Y_{i2}(1,1) \,|\, D_{i2}(1)=1, Z_{i1}=0]$.
+  - Since $D_{i2}(1)=1$ is equivalent to $S_{i2}(1)=1 \land Z_{i2}(1) \geq 0$, we have:  
+  - $\lim_{z_1 \to 0^+} E[Y_{i2} \,|\, S_{i2}=1, D_{i2}=1, Z_{i1}=z_1] = E[Y_{i2}(1,1) \,|\, D_{i2}(1)=1, Z_{i1}=0]$.   
+
+## Hsu-Shen Identification Strategy [4]
+
+- A similar argument for $E[Y_{i2} (1, 0)|D_{i2} (1) = 1, Z_{i1} = 0]$ is explicitly mentioned in the paper
+- But the whole point of this is to identify the expectations $E[θ^{d_1}_{i;0,2} D_{i2}(d_1) | Z_{i1}=0]$. 
+- That works roughly as follows as far as I can understand (Lemma 2.2 in Online Appendix): 
+  - Take Eq. 2.2.
+  - Find alternatives of Eqs. 2.8 and 2.9 with covariates
+  - Express the 2 ulterior RHS terms according to the LIE to obtain $E[\theta^{d_1}_{i;0,2} | D_{i2}(d_1), Z_{i1}=0]$ terms
+  - Follow the proof in the appendix and plug back into Equation 2.2.
+   
+## Generalization [1]: Setup
+
+- To generalize the approach to a $T$ period design, they work with _treatment path indicators_:
+
+$$
+\begin{aligned}
+    D_{ik} &= \sum_{\boldsymbol{l}_{k-1} \in L_{k-1}} D_{i} (\boldsymbol{l}_{k-1}) \cdot \mathcal{D}_{i} (\boldsymbol{l}_{k-1}) \\ 
+               &\equiv \sum_{\boldsymbol{l}_{k-1} \in L_{k-1}} S_{i} (\boldsymbol{l}_{k-1}) \cdot 1_{Z_{ik}( \boldsymbol{l}_{k-1}) \geq 0} \cdot \mathcal{D}_{i} (\boldsymbol{l}_{k-1}), \\
+    S_{ik} &= \sum_{\boldsymbol{l}_{k-1} \in L_{k-1}} S_{ik} (\boldsymbol{l}_{k-1}) \cdot \mathcal{D}_{i} ( \boldsymbol{l}_{k-1}), \\
+    Z_{ik} &= \sum_{\boldsymbol{l}_{k-1} \in L_{k-1}} Z_{i} ( \boldsymbol{l}_{k-1}) \cdot \mathcal{D}_{i} (\boldsymbol{l}_{k-1}), \quad \text{if } S_{ik} = 1.
+\end{aligned}
+$$
+- Just as in the two-period case, your observed outcome in period $k$ is a function of the $k-1$ preceding treatments. 
+
+## Generalization [2]: Estimands
+
+- We now have a greater universe of estimands: 
+
+$$
+\begin{aligned}
+    \tau\text{-period-after direct effect of } D_{i1} : \theta_{i;\tau,1} &= Y_{i(1+\tau)}(1, 0^{\tau}) - Y_{i(1+\tau)}(0, 0^{\tau}), \\
+    \tau\text{-period-after total effect of } D_{i1} : \tilde{\theta}_{i;\tau,1} &= \tilde{Y}_{i(1+\tau)}(1) - \tilde{Y}_{i(1+\tau)}(0). \\
+    \text{Immediate effect of } D_{ik} : \theta_{i;0,k} &= Y_{k} (\boldsymbol{l}_{k-1}, 1) - Y_{k} (\boldsymbol{l}_{k-1}, 0), \\
+    \tau\text{-period-after direct effect of } D_{ik} : \theta_{i;\tau,k} &= Y_{i(k+\tau)} (\boldsymbol{l}_{k-1}, 1, 0^{\tau}) - Y_{i(k+\tau)} (\boldsymbol{l}_{k-1}, 0, 0^{\tau}), \\
+    \tau\text{-period-after total effect of } D_{ik} : \tilde{\theta}_{i;\tau,k} &= \tilde{Y}_{i(k+\tau)} (\boldsymbol{l}_{k-1}, 1)- \tilde{Y}_{i(k+\tau)} (\boldsymbol{l}_{k-1}, 0),
+\end{aligned}
+$$
+
+## Generalization [3]
+
+- By again expressing the long-term effect for $\tau$ lags of the treatment in period 1, they arrive at Eq. 3.2, the generalized version of Eq. 2.2. In the case of three periods ($\tau=2$ lags) this is still easily interpretable:
+
+$$
+\begin{aligned}
+    \tilde{\theta}_{i;2,1} &= \theta_{i;2,1} + \tilde{\theta}^1_{i;1,2} D_i^2(1) - \tilde{\theta}^{0}_{i;1,2} D_i^2(0) \notag \\
+    &\quad + \theta^{(1,0)}_{i;0,3} D_i^3(1,0) - \theta^{(0,0)}_{i;0,3} D_i^3(0,0).
+\end{aligned}
+$$
+
+- In words (my take): in expectation, the total effect of treatment 1 after period 3 equals the direct effect plus total effects of the second period with 1 lag plus direct effects of the third period with zero lags, weighted by the probability of observing it
+
+> The decomposition shows that any long-term total effect is equal to its corresponding direct effect plus a sum of various shorter-term total effects adjusted by subsequent round first-stage treatment decisions.
+
+## Generalization [4]
+
+- Identification then works in exactly the same way as in the two-period case. The only additional assumption them employ serves to "reduce the number of path-dependent treatment effect parameters involved in identification."
+
+- Assumption 3.1.1 (Markovian): for any period after period 2, and any treatment path until period 2, the total/intermediate effect conditional on the past treatment path is going to depend ONLY on the last received treatment before period $k$ (messy, I know)
+
+- This means that (in expectation) Eq. 3.2 (decomposition in the 3-period case), you're going to use one estimate for $\theta^{(1,0)}_{i;0,3}$ and $\theta^{(0,0)}_{i;0,3}$
+
+
+## Discussion Points
+
+- Is the Hsu and Shen identification really less stringent than the CFR assumption?
+
+- Discontinuity and timing: there is another paper by Van Den Berg & Vikstrom (Ectra, 2022), who _"implement a new method to estimate treatment effects in settings where individuals need to be in a certain state (e.g., unemployment) to be eligible for a treatment, treatments may commence at different points in time, and the outcome of interest is realized after the individual left the initial state."_
+
+- How do these approaches relate to each other? Big open question IMO
+
+- Does estimation really need to be that complicated, what happens when you just take sample averages near the cut-off? 
+
+- Possible applications:
+  - My own work deals with repeated elections
+  - Literature about child penalty (working papers Gellen et al. 2024, Ilciukas 2025)
+  - Totarelli (2025) deals with repeated anti-recidivism interventions
+  - Anything else?
