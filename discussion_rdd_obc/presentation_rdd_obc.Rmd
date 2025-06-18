@@ -268,11 +268,10 @@ Claim: $I_{RBC}(h)$ has an asymptotic coverage error that is no larger than that
     The naive t-statistic $T(h)$ has a non-zero asymptotic mean (bias) unless $h$ is chosen to be "small enough." The coverage error of $I_{US}(h)$ is dominated by two terms: one from variance and one from this uncorrected bias.
 
 $$
-\text{Coverage Error}(I_{\text{US}}(h)) \approx \underbrace{C_1 \cdot n^{-1}h^{-1}}_{\text{Variance Term}} + \underbrace{C_2 \cdot (nh^{p+1-\nu})^2}_{\text{Squared Bias Term}} + \dots
+\text{Coverage Error}(I_{\text{US}}(h)) \approx \underbrace{C_1 \cdot (nh)^{-1}}_{\text{Variance/Shape Term}} + \underbrace{C_2 \cdot (nh^{2p+3})}_{\text{Squared Mean-Shift Term}} + \dots
 $$
 
-- To get the best possible US interval, we must choose $h$ to balance these two terms. This leads to the optimal undersmoothing bandwidth, $h_{US}$, which has a rate of $h_{US} \propto n^{-1/(p+2)}$. Plugging this optimal rate back into the error formula shows that the fastest possible coverage error for $I_{US}$ vanishes at a rate of $O(n^{-(p+1)/(p+2)})$.
-\normalsize
+- To get the best possible US interval, we must choose $h$ to balance these two dominant error terms. $h_{US}$, which has a rate of $h_{US} \propto n^{-1/(p+2)}$. Plugging this optimal rate back into the error formula shows that the fastest possible coverage error for $I_{US}$ vanishes at a rate of $O(n^{-(p+1)/(p+2)})$.
 
 ## Proof Sketch: Claim 1 - Why is that the Coverage Error?
 
@@ -329,7 +328,7 @@ This term represents how much the coverage probability is distorted because our 
 
 ## Proof Sketch: Claim 1 [2]
 
-- **Coverage Error for RBC ($I_RBC$)**:
+- **Coverage Error for RBC ($I_{RBC}$)**:
     By construction, the RBC procedure removes the first-order bias term $C_2$. Its coverage error (similar argument) is therefore dominated by a variance term and a higher-order bias term.
     
 $$
