@@ -169,7 +169,7 @@ $$
 
 ## Convergence result
 
-- Check the condition $nh^{2p+3} → 0$.
+- Check the condition $nh^{2p+3} \rightarrow 0$.
 
 From the result before, $T(h)$ will only converge to a *standard* normal $N(0,1)$ if its mean converges to zero. This happens if and only if:
 
@@ -250,7 +250,7 @@ For inference, a key feature is that $\hat{V}_{\text{BC}}(h)$ is an estimator of
 
 Paper shows that:
 
-- $I_{RBC} (h)$ has asymptotic coverage error ($P(\tau \in CI(X) - (1 - \alpha)$)that is no larger than $I_{US}(h)$, and is strictly smaller in most practically relevant cases, even when the corresponding best possible bandwidth is used to construct each confidence interval.
+- $I_{RBC} (h)$ has asymptotic coverage error ($P(\tau \in CI(X)) - (1 - \alpha)$)that is no larger than $I_{US}(h)$, and is strictly smaller in most practically relevant cases, even when the corresponding best possible bandwidth is used to construct each confidence interval.
 
 - Employing the MSE-optimal bandwidth $h_{MSE}$ to construct $I_{RBC}(h)$ is valid but suboptimal in terms of coverage error.
 
